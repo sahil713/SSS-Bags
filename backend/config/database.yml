@@ -1,0 +1,28 @@
+# frozen_string_literal: true
+
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS", 5) %>
+
+development:
+  <<: *default
+  <%= "url: #{ENV['DATABASE_URL']}" if ENV["DATABASE_URL"].present? %>
+  database: sss_bags_development
+  username: <%= ENV["DB_USER"] || "postgres" %>
+  password: <%= ENV["DB_PASSWORD"] || "" %>
+  host: <%= ENV["DB_HOST"] || "localhost" %>
+  port: <%= ENV["DB_PORT"] || "5432" %>
+
+test:
+  <<: *default
+  database: sss_bags_test
+  username: <%= ENV["DB_USER"] || "postgres" %>
+  password: <%= ENV["DB_PASSWORD"] || "" %>
+  host: <%= ENV["DB_HOST"] || "localhost" %>
+  port: <%= ENV["DB_PORT"] || "5432" %>
+
+production:
+  <<: *default
+  database: sss_bags_production
+  url: <%= ENV["DATABASE_URL"] %>

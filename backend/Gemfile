@@ -1,0 +1,46 @@
+# frozen_string_literal: true
+
+source "https://rubygems.org"
+
+# Use 3.3.1+ (3.3.0 has a parser bug with connection_pool/redis)
+ruby ">= 3.3.1"
+
+gem "rails", "~> 7.2.0"
+gem "pg", "~> 1.5"
+gem "puma", "~> 6.4"
+gem "bootsnap", require: false
+gem "dotenv-rails", groups: [:development, :test]
+
+# Auth & Security
+gem "bcrypt", "~> 3.1"
+gem "jwt"
+
+# Authorization
+gem "pundit", "~> 2.3"
+
+# Background jobs (require: false so db tasks don't load connection_pool on Ruby 3.3.0)
+gem "sidekiq", "~> 7.2", require: false
+gem "redis", "~> 5.0", require: false
+
+# External services
+gem "twilio-ruby", "~> 6.0"
+
+# API docs
+gem "rswag-api", "~> 2.14"
+gem "rswag-ui", "~> 2.14"
+
+# CORS
+gem "rack-cors"
+
+# Image processing for ActiveStorage
+gem "image_processing", "~> 1.12"
+
+group :development, :test do
+  gem "debug", platforms: %i[ mri mingw x64_mingw ]
+  gem "rspec-rails", "~> 6.0"
+  gem "factory_bot_rails", "~> 6.4"
+end
+
+group :development do
+  gem "rswag-specs", "~> 2.14"
+end
