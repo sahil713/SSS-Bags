@@ -9,5 +9,6 @@ Rails.application.configure do
   config.action_controller.raise_on_missing_callback_actions = true
   config.log_level = :info
   config.log_tags = [ :request_id ]
-  config.active_storage.service = :amazon
+  # Use S3 only when AWS credentials are set; otherwise use local disk (e.g. on Render free tier).
+  config.active_storage.service = ENV["AWS_ACCESS_KEY_ID"].present? ? :amazon : :local
 end
