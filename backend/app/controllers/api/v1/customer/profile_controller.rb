@@ -19,7 +19,7 @@ module Api
         private
 
         def profile_params
-          params.permit(:name, :phone_number)
+          params.permit(:name, :phone_number, :avatar)
         end
 
         def user_json(u)
@@ -28,11 +28,16 @@ module Api
             name: u.name,
             email: u.email,
             phone_number: u.phone_number,
+            avatar_url: u.avatar.attached? ? rails_blob_url(u.avatar) : nil,
             role: u.role,
             email_verified: u.email_verified?,
             phone_verified: u.phone_verified?,
             active: u.active?
           }
+        end
+
+        def rails_blob_url(blob)
+          Rails.application.routes.url_helpers.rails_blob_url(blob, host: request.base_url)
         end
       end
     end

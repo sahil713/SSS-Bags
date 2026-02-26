@@ -35,6 +35,8 @@ export default function AdminDashboard() {
         <Link to="/admin/products" className="bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700">Manage Products</Link>
         <Link to="/admin/orders" className="bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700">Manage Orders</Link>
         <Link to="/admin/users" className="bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700">Manage Users</Link>
+        <Link to="/admin/banners" className="bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700">Banners</Link>
+        <Link to="/admin/announcements" className="bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700">Announcements</Link>
       </div>
       <div>
         <h2 className="font-semibold text-gray-900 mb-2">Recent orders</h2>

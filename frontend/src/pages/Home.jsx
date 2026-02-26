@@ -24,11 +24,11 @@ export default function Home() {
         </Link>
       </section>
       <section>
-        <h2 className="text-2xl font-bold text-gray-900 mb-4">Featured Products</h2>
+        <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Featured Products</h2>
         {loading ? (
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {[1, 2, 3, 4].map((i) => (
-              <div key={i} className="bg-gray-100 rounded-xl aspect-square animate-pulse" />
+              <div key={i} className="bg-gray-100 dark:bg-gray-700 rounded-xl aspect-square animate-pulse" />
             ))}
           </div>
         ) : (
@@ -39,7 +39,7 @@ export default function Home() {
           </div>
         )}
         <div className="mt-6 text-center">
-          <Link to="/products" className="text-primary-700 font-semibold hover:underline focus:ring-2 focus:ring-primary-600 rounded">
+          <Link to="/products" className="text-primary-700 dark:text-primary-400 font-semibold hover:underline focus:ring-2 focus:ring-primary-600 rounded">
             View all products →
           </Link>
         </div>

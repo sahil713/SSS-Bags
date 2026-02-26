@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { getCart, updateCartItem, removeFromCart, clearCart } from '../../api/cart'
+import { getAddresses } from '../../api/addresses'
 import { useDispatch, useSelector } from 'react-redux'
 import { setCart, clearCart as clearCartState } from '../../store/slices/cartSlice'
 import { createOrder } from '../../api/orders'
@@ -12,9 +13,19 @@ export default function Cart() {
   const navigate = useNavigate()
   const [loading, setLoading] = useState(true)
   const [placing, setPlacing] = useState(false)
+  const [addresses, setAddresses] = useState([])
+  const [selectedAddressId, setSelectedAddressId] = useState(null)
 
   useEffect(() => {
     getCart().then((r) => dispatch(setCart(r.data))).catch(() => {}).finally(() => setLoading(false))
+    getAddresses().then((r) => {
+      const addrs = r.data.addresses || []
+      setAddresses(addrs)
+      if (addrs.length > 0 && !selectedAddressId) {
+        const defaultAddr = addrs.find((a) => a.default) || addrs[0]
+        setSelectedAddressId(defaultAddr.id)
+      }
+    }).catch(() => {})
   }, [dispatch])
 
   const handleUpdateQty = (id, quantity) => {
@@ -30,8 +41,17 @@ export default function Cart() {
   }
 
   const handlePlaceOrder = () => {
+    if (!selectedAddressId && addresses.length > 0) {
+      alert('Please select a delivery address')
+      return
+    }
+    if (addresses.length === 0) {
+      alert('Please add a delivery address in your profile first.')
+      navigate('/profile')
+      return
+    }
     setPlacing(true)
-    createOrder()
+    createOrder({ address_id: selectedAddressId })
       .then((res) => {
         dispatch(clearCartState())
         navigate(`/orders/${res.data.id}/track`)
@@ -79,10 +99,42 @@ export default function Cart() {
           <button type="button" onClick={handleClear} className="text-sm text-red-600 hover:underline">Clear cart</button>
         </div>
         <div className="lg:w-80 shrink-0">
-          <div className="bg-primary-50 border border-primary-200 rounded-xl p-6 sticky top-24">
-            <h2 className="font-bold text-lg text-gray-900">Summary</h2>
-            <p className="mt-2 text-gray-600">Total: <span className="font-bold text-primary-700 text-xl">₹{totalPrice}</span></p>
-            <Button onClick={handlePlaceOrder} disabled={placing} className="w-full mt-4">
+          <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-6 sticky top-24 space-y-4">
+            <h2 className="font-bold text-lg text-gray-900 dark:text-white">Delivery address</h2>
+            {addresses.length === 0 ? (
+              <p className="text-sm text-amber-600 dark:text-amber-400">
+                No saved addresses. <Link to="/profile" className="underline font-medium">Add one in your profile</Link> before placing order.
+              </p>
+            ) : (
+              <ul className="space-y-2">
+                {addresses.map((a) => (
+                  <li key={a.id}>
+                    <label className={`flex gap-3 p-3 rounded-lg border cursor-pointer transition-colors ${
+                      selectedAddressId === a.id
+                        ? 'border-primary-500 dark:border-primary-400 bg-primary-50 dark:bg-primary-900/20'
+                        : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500'
+                    }`}>
+                      <input
+                        type="radio"
+                        name="delivery-address"
+                        checked={selectedAddressId === a.id}
+                        onChange={() => setSelectedAddressId(a.id)}
+                        className="mt-1 text-primary-600"
+                      />
+                      <div className="text-sm text-gray-700 dark:text-gray-300 min-w-0">
+                        <p className="font-medium text-gray-900 dark:text-white">{a.line1}</p>
+                        {a.line2 && <p>{a.line2}</p>}
+                        <p>{[a.city, a.state].filter(Boolean).join(', ')} {a.pincode && `- ${a.pincode}`}</p>
+                        {a.default && <span className="text-primary-600 dark:text-primary-400 text-xs">Default</span>}
+                      </div>
+                    </label>
+                  </li>
+                ))}
+              </ul>
+            )}
+            <h2 className="font-bold text-lg text-gray-900 dark:text-white pt-2">Summary</h2>
+            <p className="text-gray-600 dark:text-gray-400">Total: <span className="font-bold text-primary-600 dark:text-primary-400 text-xl">₹{totalPrice}</span></p>
+            <Button onClick={handlePlaceOrder} disabled={placing || addresses.length === 0} className="w-full mt-2">
               {placing ? 'Placing order...' : 'Place order'}
             </Button>
           </div>

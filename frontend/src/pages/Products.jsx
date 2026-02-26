@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { getProducts } from '../api/products'
 import { getCategories } from '../api/categories'
 import ProductCard from '../components/ProductCard'
+import { ProductCardSkeleton } from '../components/common/Skeleton'
 
 export default function Products() {
   const [products, setProducts] = useState([])
@@ -36,16 +37,16 @@ export default function Products() {
   const totalPages = Math.ceil(meta.total / meta.per_page) || 1
 
   return (
-    <div>
-      <h1 className="text-2xl font-bold text-gray-900 mb-4">Products</h1>
+    <div className="w-full max-w-content mx-auto px-6 lg:px-12 py-12 lg:py-16">
+      <h1 className="text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-8">Products</h1>
       <div className="flex flex-col md:flex-row gap-6">
         <aside className="md:w-56 shrink-0 space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Category</label>
             <select
               value={filters.category_id}
               onChange={(e) => setFilters((f) => ({ ...f, category_id: e.target.value }))}
-              className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:ring-2 focus:ring-primary-600"
+              className="w-full rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white px-3 py-2 focus:ring-2 focus:ring-primary-600"
             >
               <option value="">All</option>
               {categories.map((c) => (
@@ -54,14 +55,14 @@ export default function Products() {
             </select>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Sort</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Sort</label>
             <select
               value={`${filters.sort}-${filters.order}`}
               onChange={(e) => {
                 const [sort, order] = e.target.value.split('-')
                 setFilters((f) => ({ ...f, sort, order }))
               }}
-              className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:ring-2 focus:ring-primary-600"
+              className="w-full rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white px-3 py-2 focus:ring-2 focus:ring-primary-600"
             >
               <option value="created_at-desc">Newest</option>
               <option value="price-asc">Price: Low to High</option>
@@ -77,20 +78,20 @@ export default function Products() {
               placeholder="Search products..."
               value={filters.q}
               onChange={(e) => setFilters((f) => ({ ...f, q: e.target.value }))}
-              className="flex-1 rounded-lg border border-gray-300 px-3 py-2 focus:ring-2 focus:ring-primary-600"
+              className="flex-1 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white px-3 py-2 focus:ring-2 focus:ring-primary-600"
             />
           </div>
           {loading ? (
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-              {[1, 2, 3, 4, 5, 6].map((i) => (
-                <div key={i} className="bg-gray-100 rounded-xl aspect-square animate-pulse" />
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
+                <ProductCardSkeleton key={i} />
               ))}
             </div>
           ) : (
             <>
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-8">
                 {products.map((p) => (
-                  <ProductCard key={p.id} product={p} />
+                  <ProductCard key={p.id} product={p} showAddToCart />
                 ))}
               </div>
               {meta.total > meta.per_page && (
@@ -99,18 +100,18 @@ export default function Products() {
                     type="button"
                     onClick={() => setPage((p) => Math.max(1, p - 1))}
                     disabled={page <= 1}
-                    className="rounded-lg border border-primary-600 px-4 py-2 text-primary-700 disabled:opacity-50"
+                    className="rounded-lg border border-primary-600 dark:border-primary-500 px-4 py-2 text-primary-700 dark:text-primary-300 disabled:opacity-50"
                   >
                     Previous
                   </button>
-                  <span className="py-2 px-4">
+                  <span className="py-2 px-4 text-gray-700 dark:text-gray-300">
                     Page {page} of {totalPages}
                   </span>
                   <button
                     type="button"
                     onClick={() => setPage((p) => p + 1)}
                     disabled={page >= totalPages}
-                    className="rounded-lg border border-primary-600 px-4 py-2 text-primary-700 disabled:opacity-50"
+                    className="rounded-lg border border-primary-600 dark:border-primary-500 px-4 py-2 text-primary-700 dark:text-primary-300 disabled:opacity-50"
                   >
                     Next
                   </button>

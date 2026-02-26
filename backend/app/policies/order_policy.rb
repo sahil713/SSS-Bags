@@ -7,4 +7,5 @@ class OrderPolicy < ApplicationPolicy
   def create? = user&.customer?
   def update? = user&.admin?
   def update_status? = user&.admin?
+  def cancel? = user.present? && record.user_id == user.id && record.status == "pending"
 end

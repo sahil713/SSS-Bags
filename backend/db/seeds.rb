@@ -49,4 +49,36 @@ products_data.each do |pd|
   end
 end
 
+# Banners (homepage promos)
+if defined?(Banner) && Banner.table_exists?
+  [
+    { title: "Diwali Sale - Flat 30% OFF", subtitle: "On Premium Bags & Luggage", description: "Limited period offer. Use code DIWALI30 at checkout.", button_text: "Shop Now", button_link: "/products", banner_type: "homepage", priority: 0 },
+    { title: "Buy 2 Get 1 Free", subtitle: "On Selected Collections", description: "Mix and match. Add 3 items, get the lowest priced one free.", button_text: "Explore Collection", button_link: "/products", banner_type: "homepage", priority: 1 },
+    { title: "Festival Collection Live Now", subtitle: "New Arrivals", description: "Handpicked bags for the festive season.", button_text: "Shop Now", button_link: "/products", banner_type: "homepage", priority: 2 },
+  ].each_with_index do |attrs, i|
+    Banner.find_or_create_by!(title: attrs[:title]) do |b|
+      b.subtitle = attrs[:subtitle]
+      b.description = attrs[:description]
+      b.button_text = attrs[:button_text]
+      b.button_link = attrs[:button_link]
+      b.banner_type = attrs[:banner_type]
+      b.priority = attrs[:priority]
+      b.is_active = true
+      b.start_date = 1.month.ago
+      b.end_date = 2.months.from_now
+    end
+  end
+  puts "Seeded #{Banner.count} banners."
+end
+
+# Announcement (top strip)
+if defined?(Announcement) && Announcement.table_exists?
+  Announcement.find_or_create_by!(message: "🔥 Diwali Mega Sale Live Now! Shop Before It Ends!") do |a|
+    a.is_active = true
+    a.start_date = 1.month.ago
+    a.end_date = 2.months.from_now
+  end
+  puts "Seeded announcements."
+end
+
 puts "Seeded #{Category.count} categories, #{Product.not_deleted.count} products."

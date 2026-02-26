@@ -9,6 +9,7 @@ Rails.application.routes.draw do
       post "auth/login", to: "auth#login"
       post "auth/refresh", to: "auth#refresh"
       post "auth/verify_email", to: "auth#verify_email"
+      post "auth/resend_email_verification", to: "auth#resend_email_verification"
       post "auth/send_otp", to: "auth#send_otp"
       post "auth/verify_otp", to: "auth#verify_otp"
 
@@ -16,6 +17,8 @@ Rails.application.routes.draw do
         get :search, on: :collection
       end
       resources :categories, only: %i[index show], param: :slug
+      get "banners", to: "banners#index"
+      get "announcements", to: "announcements#index"
 
       namespace :customer do
         get "profile", to: "profile#show"
@@ -26,6 +29,7 @@ Rails.application.routes.draw do
         resources :addresses, only: %i[index create update destroy]
         resources :orders, only: %i[index show create] do
           get :track, on: :member
+          post :cancel, on: :member
         end
       end
 
@@ -45,6 +49,16 @@ Rails.application.routes.draw do
           end
         end
         resources :payments, only: %i[index show]
+        resources :banners, only: %i[index show create update destroy] do
+          member do
+            patch :activate
+          end
+        end
+        resources :announcements, only: %i[index show create update destroy] do
+          member do
+            patch :activate
+          end
+        end
       end
 
       namespace :webhooks do

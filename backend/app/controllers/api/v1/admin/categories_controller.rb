@@ -20,7 +20,8 @@ module Api
           category = Category.new(category_params)
           authorize category
           if category.save
-            render json: { id: category.id, name: category.name, slug: category.slug }, status: :created
+            category.image.attach(params[:image]) if params[:image].present?
+            render json: category_json(category), status: :created
           else
             render json: { errors: category.errors.full_messages }, status: :unprocessable_entity
           end
@@ -29,7 +30,8 @@ module Api
         def update
           authorize @category
           if @category.update(category_params)
-            render json: { id: @category.id, name: @category.name, slug: @category.slug }
+            @category.image.attach(params[:image]) if params[:image].present?
+            render json: category_json(@category)
           else
             render json: { errors: @category.errors.full_messages }, status: :unprocessable_entity
           end
@@ -49,6 +51,14 @@ module Api
 
         def category_params
           params.permit(:name, :slug)
+        end
+
+        def category_json(c)
+          h = { id: c.id, name: c.name, slug: c.slug }
+          if c.image.attached?
+            h[:image_url] = Rails.application.routes.url_helpers.rails_blob_url(c.image, host: request.base_url)
+          end
+          h
         end
       end
     end

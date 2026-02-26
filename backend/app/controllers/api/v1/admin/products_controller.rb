@@ -67,7 +67,7 @@ module Api
 
         def product_params
           base = params[:product].present? ? params.require(:product) : params
-          base.permit(:name, :description, :price, :discount_price, :stock_quantity, :category_id, :slug, :status)
+          base.permit(:name, :description, :price, :discount_price, :stock_quantity, :category_id, :slug, :status, :featured)
         end
 
         def like_escape(str)
@@ -83,7 +83,7 @@ module Api
         end
 
         def admin_product_json(p)
-          {
+          h = {
             id: p.id,
             name: p.name,
             description: p.description,
@@ -98,6 +98,8 @@ module Api
             created_at: p.created_at,
             updated_at: p.updated_at
           }
+          h[:featured] = p.featured if p.respond_to?(:featured)
+          h
         end
       end
     end

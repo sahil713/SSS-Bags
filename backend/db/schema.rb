@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_02_23_120000) do
+ActiveRecord::Schema[7.2].define(version: 2025_02_23_130100) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -52,6 +52,45 @@ ActiveRecord::Schema[7.2].define(version: 2025_02_23_120000) do
     t.index ["user_id"], name: "index_addresses_on_user_id"
   end
 
+  create_table "announcements", force: :cascade do |t|
+    t.text "message", null: false
+    t.boolean "is_active", default: true, null: false
+    t.string "background_color"
+    t.string "text_color"
+    t.datetime "start_date"
+    t.datetime "end_date"
+    t.string "link"
+    t.datetime "deleted_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["deleted_at"], name: "index_announcements_on_deleted_at"
+    t.index ["is_active"], name: "index_announcements_on_is_active"
+    t.index ["start_date", "end_date"], name: "index_announcements_on_start_date_and_end_date"
+  end
+
+  create_table "banners", force: :cascade do |t|
+    t.string "title", default: "", null: false
+    t.string "subtitle"
+    t.text "description"
+    t.string "button_text"
+    t.string "button_link"
+    t.string "banner_type", default: "homepage", null: false
+    t.boolean "is_active", default: true, null: false
+    t.datetime "start_date"
+    t.datetime "end_date"
+    t.integer "priority", default: 0, null: false
+    t.string "background_color"
+    t.string "text_color"
+    t.datetime "deleted_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["banner_type"], name: "index_banners_on_banner_type"
+    t.index ["deleted_at"], name: "index_banners_on_deleted_at"
+    t.index ["is_active"], name: "index_banners_on_is_active"
+    t.index ["priority"], name: "index_banners_on_priority"
+    t.index ["start_date", "end_date"], name: "index_banners_on_start_date_and_end_date"
+  end
+
   create_table "cart_items", force: :cascade do |t|
     t.bigint "cart_id", null: false
     t.bigint "product_id", null: false
@@ -76,6 +115,13 @@ ActiveRecord::Schema[7.2].define(version: 2025_02_23_120000) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["slug"], name: "index_categories_on_slug", unique: true
+  end
+
+  create_table "home_banners", force: :cascade do |t|
+    t.integer "position", default: 0, null: false
+    t.string "link_url"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "order_items", force: :cascade do |t|
@@ -136,8 +182,10 @@ ActiveRecord::Schema[7.2].define(version: 2025_02_23_120000) do
     t.datetime "deleted_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "featured", default: false, null: false
     t.index ["category_id"], name: "index_products_on_category_id"
     t.index ["deleted_at"], name: "index_products_on_deleted_at"
+    t.index ["featured"], name: "index_products_on_featured"
     t.index ["slug"], name: "index_products_on_slug", unique: true
     t.index ["status"], name: "index_products_on_status"
   end

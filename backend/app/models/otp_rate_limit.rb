@@ -26,6 +26,7 @@ class OtpRateLimit < ApplicationRecord
   end
 
   def window_expired?
+    return true if window_start.blank?
     window_start < WINDOW_MINUTES.minutes.ago
   end
 end

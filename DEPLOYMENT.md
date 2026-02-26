@@ -33,60 +33,90 @@ Replace `YOUR_USERNAME` and `YOUR_REPO_NAME` with your GitHub username and repo 
 
 1. Go to [Render Dashboard](https://dashboard.render.com) → **New** → **PostgreSQL**.
 2. Name it e.g. `sss-bags-db`.
-3. Create. Copy the **Internal Database URL** (you’ll use it for the backend).
+3. Create. Copy the **Internal Database URL** (you’ll use it for the backend)."
+dpg-d6e30eggjchc738fek4g-a -> hostname
+5432 -> port 
+sss_bags_db -> database
+sss_bags_db_user ->username 
+OJOQ3hCaYRWqZuCakMIt4fLXYmm2TT7G -> password 
+postgresql://sss_bags_db_user:OJOQ3hCaYRWqZuCakMIt4fLXYmm2TT7G@dpg-d6e30eggjchc738fek4g-a/sss_bags_db -> internal database url 
+postgresql://sss_bags_db_user:OJOQ3hCaYRWqZuCakMIt4fLXYmm2TT7G@dpg-d6e30eggjchc738fek4g-a.oregon-postgres.render.com/sss_bags_db -> external database url 
+PGPASSWORD=OJOQ3hCaYRWqZuCakMIt4fLXYmm2TT7G psql -h dpg-d6e30eggjchc738fek4g-a.oregon-postgres.render.com -U sss_bags_db_user sss_bags_db -> psql command 
 
 ### 2.2 Deploy the Rails API
 
-1. **New** → **Web Service**.
-2. Connect your GitHub repo (the one you pushed in step 1).
-3. Settings:
-   - **Root Directory:** `backend`
-   - **Runtime:** `Ruby`
-   - **Build Command:** `bundle install`
-   - **Start Command:** `bundle exec puma -C config/puma.rb -p $PORT`
-   - **Release Command** (optional): `bin/rails db:migrate` — runs before each deploy so the DB is up to date.
-4. **Environment** (add these):
-   - `RAILS_ENV` = `production`
-   - `DATABASE_URL` = *(paste the Internal Database URL from 2.1)*
-   - `JWT_SECRET` = *(run `openssl rand -hex 32` and paste the result)*
-   - `CORS_ORIGINS` = `https://your-frontend-url.vercel.app` *(you’ll set the real URL after deploying the frontend)*
-   - `REDIS_URL` = *(leave empty for now, or add a free Redis URL from [Upstash](https://upstash.com) if you need Sidekiq)*
-5. Deploy. After it’s live, copy your backend URL, e.g. `https://sss-bags-api.onrender.com`.
+**Where:** [Render Dashboard](https://dashboard.render.com) (log in or sign up).
+
+**Step 1 – Create a Web Service**
+
+- On the dashboard, click the blue **New +** button (top right).
+- In the menu, click **Web Service**.
+- You’ll see “Connect a repository”.
+
+**Step 2 – Connect GitHub**
+
+- If GitHub isn’t connected, click **Connect GitHub** and authorize Render.
+- In the list of repos, find your SSS BAGS repo and click **Connect** next to it.
+- **Where to find it:** Repos are listed by name; use the search box if needed.
+
+**Step 3 – Configure the service (where each setting is)**
+
+After you connect the repo, you’ll see a form. Use these values and know where they are:
+
+| What to set | Where to find it | Value to use |
+|-------------|------------------|--------------|
+| **Name** | At the top of the form | e.g. `sss-bags-api` (this becomes part of your URL). |
+| **Region** | Dropdown | Pick one close to you (e.g. Oregon). |
+| **Branch** | Under the repo name | Usually `main`. |
+| **Root Directory** | **Advanced** section (click to expand) | Type: `backend` (so Render builds only the Rails app). |
+| **Runtime** | In the main form | Select **Ruby**. |
+| **Build Command** | In the form | `bundle install` |
+| **Start Command** | In the form | `bundle exec puma -C config/puma.rb -p $PORT` |
+| **Pre-deploy command** | **Settings** → same section as Build/Start (see below) | `bin/rails db:migrate` — runs before each deploy so the DB is up to date. **Only on paid plans.** On the free tier this field is not available; use the Start Command workaround below instead. |
+
+**Step 4 – Add environment variables**
+
+- Scroll to **Environment** or the **Environment Variables** section.
+- Click **Add Environment Variable** (or **+ Add**) for each of these:
+
+| Key | Where to get the value | Example / note |
+|-----|------------------------|-----------------|
+| `RAILS_ENV` | You type it | `production` |
+| `SECRET_KEY_BASE` | On your computer run: `openssl rand -hex 64` | Paste the long string. **Required** — Rails needs this in production. |
+| `DATABASE_URL` | From step 2.1: in your PostgreSQL service, open **Info** and copy **Internal Database URL** | Paste the full URL (starts with `postgresql://`). |
+| `JWT_SECRET` | On your computer run: `openssl rand -hex 32` | Paste the long string (e.g. `a1b2c3...`). |
+| `CORS_ORIGINS` | You’ll set this later | For now use a placeholder: `https://your-app.vercel.app` — replace with your real Vercel URL after deploying the frontend. |
+| `REDIS_URL` | Optional | Leave blank, or use a free Redis URL from [Upstash](https://upstash.com) if you want Sidekiq. |
+
+**Release / Pre-deploy command (migrations)**
+
+- Render uses **Pre-deploy command** (Heroku called it "Release Command"). It runs before each deploy (e.g. `bin/rails db:migrate`).
+- **Where to find it:** Dashboard → your backend **Web Service** → **Settings**. In the same section as Build Command and Start Command, look for **Pre-deploy command**. If you don’t see it, your plan may not include it.
+- **Free tier:** Pre-deploy is only available on **paid** web services. On the free tier, run migrations in the **Start Command** instead:  
+  `bin/rails db:migrate && bundle exec puma -C config/puma.rb -p $PORT`
+
+**Step 5 – Deploy**
+
+- Click **Create Web Service** (bottom of the page).
+- Render will build and deploy. **Where to see progress:** the **Logs** tab on the service page.
+- When the build succeeds, **where to find your URL:** at the top of the service page, e.g. `https://sss-bags-api.onrender.com`. Copy this URL; the frontend will use it.
+
+https://sss-bags.onrender.com
+
+74.220.48.0/24
+74.220.56.0/24
 
 ---
 
 ## 3. Deploy Frontend (Vercel – Free)
 
-[Vercel](https://vercel.com) is good for React/Vite apps.
+1. **[Vercel](https://vercel.com)** → sign in with GitHub → **Add New** → **Project** → select the same repo.
+2. **Settings:** Root Directory = `frontend`, Framework = Vite, Build = `npm run build`, Output = `dist`.
+3. **Env:** Add `VITE_API_URL` = your Render backend URL including the API path (e.g. `https://sss-bags.onrender.com/api/v1`).
+4. **Deploy** → copy your frontend URL (e.g. `https://sss-bags.vercel.app`).
+5. **Render** → backend → **Environment** → set `CORS_ORIGINS` = that Vercel URL → redeploy backend.
 
-### 3.1 Build the frontend to use your backend URL
-
-In `frontend`, create or edit `.env.production`:
-
-```bash
-cd frontend
-echo "VITE_API_URL=https://YOUR_BACKEND_URL" > .env.production
-```
-
-Replace `YOUR_BACKEND_URL` with the Render backend URL (e.g. `https://sss-bags-api.onrender.com`). Do **not** add `/api/v1` — the app already uses that path.
-
-### 3.2 Deploy on Vercel
-
-1. Go to [Vercel](https://vercel.com) and sign in with GitHub.
-2. **Add New** → **Project** → import the same GitHub repo.
-3. Settings:
-   - **Root Directory:** `frontend`
-   - **Framework Preset:** Vite
-   - **Build Command:** `npm run build`
-   - **Output Directory:** `dist`
-4. Add **Environment Variable**: `VITE_API_URL` = `https://YOUR_BACKEND_URL` (same as above).
-5. Deploy. You’ll get a URL like `https://sss-bags.vercel.app`.
-
-### 3.3 Point backend CORS to your frontend
-
-1. In Render → your backend service → **Environment**.
-2. Set `CORS_ORIGINS` = `https://sss-bags.vercel.app` (your real Vercel URL).
-3. Redeploy the backend so CORS allows the frontend.
+https://sss-bags-nine.vercel.app/products
 
 ---
 
@@ -139,7 +169,7 @@ bin/rails db:seed
 
 - [ ] Code pushed to GitHub
 - [ ] Render: PostgreSQL created
-- [ ] Render: Backend web service deployed, `DATABASE_URL` and `JWT_SECRET` set
+- [ ] Render: Backend web service deployed, `SECRET_KEY_BASE`, `DATABASE_URL`, and `JWT_SECRET` set
 - [ ] Vercel: Frontend deployed, `VITE_API_URL` = backend URL
 - [ ] Backend: `CORS_ORIGINS` = your Vercel URL
 - [ ] Backend: `db:migrate` and `db:seed` run
@@ -152,5 +182,7 @@ bin/rails db:seed
 - **CORS errors in browser:** Make sure `CORS_ORIGINS` on Render exactly matches your Vercel URL (including `https://`).
 - **API 404:** Ensure `VITE_API_URL` has no trailing slash and no `/api/v1` (the app adds that).
 - **Database errors:** Confirm `DATABASE_URL` in Render is the **Internal** URL from the PostgreSQL service.
+- **"Missing secret_key_base for production":** Add env var `SECRET_KEY_BASE` on Render. Generate with: `openssl rand -hex 64`, then paste the value and redeploy.
+- **"Missing service adapter for S3":** The app now uses local disk storage in production when AWS is not set, so you don’t need S3 on Render. Product image uploads will work; they are stored on the server (ephemeral on Render, so they may be lost on redeploy). For permanent storage later, add the `aws-sdk-s3` gem and set `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_REGION`, and `AWS_BUCKET`.
 
 Good luck with your college showcase.

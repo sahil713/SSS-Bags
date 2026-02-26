@@ -8,6 +8,7 @@ module Api
 
       def index
         scope = Product.active.not_deleted.includes(:category)
+        scope = scope.where(featured: true) if params[:featured].present? && Product.column_names.include?("featured")
         scope = scope.where(category_id: params[:category_id]) if params[:category_id].present?
         scope = scope.where("name ILIKE ?", "%#{like_escape(params[:q])}%") if params[:q].present?
         scope = scope.order(created_at: :desc)
@@ -49,7 +50,7 @@ module Api
       end
 
       def product_json(p)
-        {
+        h = {
           id: p.id,
           name: p.name,
           description: p.description,
@@ -63,6 +64,8 @@ module Api
           status: p.status,
           images: p.images.attached? ? p.images.map { |img| blob_url(img) } : []
         }
+        h[:featured] = p.featured if p.respond_to?(:featured)
+        h
       end
     end
   end

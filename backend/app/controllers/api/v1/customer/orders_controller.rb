@@ -4,16 +4,16 @@ module Api
   module V1
     module Customer
       class OrdersController < BaseController
-        before_action :set_order, only: %i[show track]
+        before_action :set_order, only: %i[show track cancel]
 
         def index
-          orders = current_user.orders.recent_first
+          orders = current_user.orders.recent_first.includes(order_items: :product)
           page = (params[:page] || 1).to_i
           per = (params[:per_page] || 10).to_i.clamp(1, 50)
           total = orders.count
           list = orders.offset((page - 1) * per).limit(per)
           render json: {
-            orders: list.map { |o| order_json(o) },
+            orders: list.map { |o| order_json(o, include_items: true) },
             meta: { total: total, page: page, per_page: per }
           }
         end
@@ -23,14 +23,25 @@ module Api
           render json: order_json(@order, include_items: true)
         end
 
-        def create
-          address = current_user.default_address
+        def cancel
+          authorize @order
+          if @order.status != "pending"
+            return render json: { error: "Only pending orders can be cancelled" }, status: :unprocessable_entity
+          end
+          @order.update!(status: "cancelled")
+          render json: order_json(@order, include_items: true)
+        end
 
-          Rails.logger.info "address:  #{address.inspect}"
+        def create
+          address = if params[:address_id].present?
+            current_user.addresses.find_by(id: params[:address_id])
+          else
+            current_user.default_address
+          end
 
           shipping = address ? address.as_shipping_hash : params.permit(:line1, :line2, :city, :state, :pincode, :phone, :label).to_h
           if shipping.blank? || shipping[:line1].blank?
-            return render json: { error: "Shipping address required" }, status: :unprocessable_entity
+            return render json: { error: "Please select a delivery address" }, status: :unprocessable_entity
           end
 
           order = OrderCreationService.call(current_user, shipping)
@@ -55,6 +66,7 @@ module Api
         def order_json(o, include_items: false)
           h = {
             id: o.id,
+            order_number: "ORD-#{o.id}",
             total_price: o.total_price,
             shipping_address: o.shipping_address,
             status: o.status,
@@ -62,9 +74,30 @@ module Api
             created_at: o.created_at
           }
           if include_items
-            h[:items] = o.order_items.map { |i| { product_id: i.product_id, product_name: i.product.name, quantity: i.quantity, price_at_purchase: i.price_at_purchase, subtotal: i.subtotal } }
+            h[:items] = o.order_items.includes(:product).map { |i| order_item_json(i) }
           end
           h
+        end
+
+        def order_item_json(item)
+          h = {
+            id: item.id,
+            product_id: item.product_id,
+            product_name: item.product.name,
+            product_slug: item.product.slug,
+            quantity: item.quantity,
+            price_at_purchase: item.price_at_purchase,
+            subtotal: item.subtotal
+          }
+          if item.product.images.attached?
+            h[:product_image_url] = rails_blob_url(item.product.images.first)
+          end
+          h
+        end
+
+        def rails_blob_url(blob)
+          return nil unless blob
+          Rails.application.routes.url_helpers.rails_blob_url(blob, host: request.base_url)
         end
       end
     end

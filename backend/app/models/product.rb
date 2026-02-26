@@ -22,6 +22,7 @@ class Product < ApplicationRecord
   validates :status, inclusion: { in: STATUSES }
 
   scope :active, -> { where(status: "active") }
+  scope :featured, -> { where(featured: true) }
   scope :in_stock, -> { where("stock_quantity > 0") }
 
   before_validation :generate_slug, on: :create

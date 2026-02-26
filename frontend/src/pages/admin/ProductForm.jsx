@@ -11,7 +11,7 @@ export default function AdminProductForm() {
   const [categories, setCategories] = useState([])
   const [loading, setLoading] = useState(isEdit)
   const [saving, setSaving] = useState(false)
-  const [form, setForm] = useState({ name: '', description: '', price: '', discount_price: '', stock_quantity: 0, category_id: '', status: 'active', image_ids: [] })
+  const [form, setForm] = useState({ name: '', description: '', price: '', discount_price: '', stock_quantity: 0, category_id: '', status: 'active', featured: false, image_ids: [] })
 
   useEffect(() => {
     getAdminCategories().then((res) => setCategories(res.data.categories || [])).catch(() => {})
@@ -21,14 +21,17 @@ export default function AdminProductForm() {
     if (isEdit) {
       getAdminProduct(slug).then((res) => {
         const p = res.data
-        setForm({ name: p.name, description: p.description || '', price: p.price, discount_price: p.discount_price || '', stock_quantity: p.stock_quantity, category_id: p.category_id, status: p.status, image_ids: [] })
+        setForm({ name: p.name, description: p.description || '', price: p.price, discount_price: p.discount_price || '', stock_quantity: p.stock_quantity, category_id: p.category_id, status: p.status, featured: !!p.featured, image_ids: [] })
       }).catch(() => {}).finally(() => setLoading(false))
     }
   }, [isEdit, slug])
 
   const handleChange = (e) => {
-    const { name, value } = e.target
-    setForm((f) => ({ ...f, [name]: name === 'category_id' || name === 'stock_quantity' ? (value ? Number(value) : '') : value }))
+    const { name, value, type, checked } = e.target
+    setForm((f) => ({
+      ...f,
+      [name]: type === 'checkbox' ? checked : (name === 'category_id' || name === 'stock_quantity' ? (value ? Number(value) : '') : value),
+    }))
   }
 
   const handleFile = (e) => {
@@ -76,6 +79,12 @@ export default function AdminProductForm() {
             <option value="">Select</option>
             {categories.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
           </select>
+        </div>
+        <div>
+          <label className="flex items-center gap-2 cursor-pointer">
+            <input type="checkbox" name="featured" checked={!!form.featured} onChange={handleChange} className="rounded border-gray-300 text-primary-600 focus:ring-primary-500" />
+            <span className="text-sm font-medium text-gray-700">Featured on homepage</span>
+          </label>
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
