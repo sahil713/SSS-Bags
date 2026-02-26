@@ -28,9 +28,10 @@ export default function Profile() {
       setName(u.name || '')
       setPhoneNumber(u.phone_number || '')
       setAvatarUrl(u.avatar_url || null)
+      dispatch(updateUser(u))
     }).catch(() => {})
     getAddresses().then((res) => setAddresses(res.data.addresses || [])).catch(() => {})
-  }, [])
+  }, [dispatch])
   useEffect(() => {
     if (user?.avatar_url) setAvatarUrl(user.avatar_url)
   }, [user?.avatar_url])
@@ -46,8 +47,12 @@ export default function Profile() {
     if (avatarFile) payload.avatar = avatarFile
     updateProfile(payload)
       .then((res) => {
-        dispatch(updateUser(res.data))
-        setAvatarUrl(res.data.avatar_url || null)
+        const payload = { ...res.data }
+        if (payload.avatar_url) {
+          payload.avatar_url = `${payload.avatar_url}${payload.avatar_url.includes('?') ? '&' : '?'}t=${Date.now()}`
+        }
+        dispatch(updateUser(payload))
+        setAvatarUrl(payload.avatar_url || null)
         setAvatarFile(null)
         setMessage('Profile updated')
       })
@@ -139,7 +144,7 @@ export default function Profile() {
                 <div className="relative w-20 h-20">
                   <div className="w-20 h-20 rounded-full overflow-hidden bg-primary-500 flex items-center justify-center ring-2 ring-primary-400 group-hover:ring-primary-400 transition-all shadow-md">
                     {(avatarUrl || avatarFile) ? (
-                      <img src={avatarUrl} alt="Avatar" className="w-full h-full object-cover" />
+                      <img key={avatarUrl} src={avatarUrl} alt="Avatar" className="w-full h-full object-cover" />
                     ) : (
                       <span className="text-2xl font-semibold text-white">
                         {(name || user?.name || '?').trim().slice(0, 2).toUpperCase() || '?'}

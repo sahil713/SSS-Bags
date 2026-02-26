@@ -84,7 +84,7 @@ export default function Navbar() {
                           </span>
                         )}
                       </button>
-                      <AccountDropdown user={user} />
+                      <AccountDropdown key={user?.avatar_url || user?.id} user={user} />
                     </>
                   )}
                   {isAdmin && (

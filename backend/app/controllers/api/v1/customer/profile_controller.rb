@@ -9,7 +9,12 @@ module Api
         end
 
         def update
-          if current_user.update(profile_params)
+          if params[:avatar].present?
+            current_user.avatar.attach(params[:avatar])
+          end
+          attrs = profile_params.except(:avatar)
+          if current_user.update(attrs)
+            current_user.reload
             render json: user_json(current_user)
           else
             render json: { errors: current_user.errors.full_messages }, status: :unprocessable_entity

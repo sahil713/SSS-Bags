@@ -35,7 +35,7 @@ export default function AccountDropdown({ user }) {
         aria-label="Account menu"
       >
         {user?.avatar_url ? (
-          <img src={user.avatar_url} alt="" className="w-full h-full object-cover" />
+          <img key={user.avatar_url} src={user.avatar_url} alt="" className="w-full h-full object-cover" />
         ) : (
           initial
         )}
