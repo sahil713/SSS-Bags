@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SSS BAGS - Full Stack E-Commerce Project Report</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+    
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      line-height: 1.6;
+      color: #1a1a2e;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 50px;
+      background: #fff;
+    }
+    
+    @media print {
+      body { padding: 20px; }
+      .no-print { display: none !important; }
+      h1, h2, h3 { page-break-after: avoid; }
+      table, pre { page-break-inside: avoid; }
+    }
+    
+    .cover {
+      text-align: center;
+      padding: 80px 0 60px;
+      border-bottom: 3px solid #7c3aed;
+    }
+    .cover h1 {
+      font-size: 2.4rem;
+      color: #7c3aed;
+      margin-bottom: 12px;
+      font-weight: 700;
+    }
+    .cover .subtitle {
+      font-size: 1.2rem;
+      color: #6b7280;
+      margin-bottom: 8px;
+    }
+    .cover .meta {
+      font-size: 0.95rem;
+      color: #9ca3af;
+      margin-top: 24px;
+    }
+    
+    h2 {
+      font-size: 1.4rem;
+      color: #7c3aed;
+      margin: 36px 0 16px;
+      padding-bottom: 6px;
+      border-bottom: 2px solid #ede9fe;
+    }
+    h3 {
+      font-size: 1.15rem;
+      color: #4c1d95;
+      margin: 24px 0 12px;
+    }
+    p { margin-bottom: 12px; }
+    ul, ol { margin: 12px 0 12px 24px; }
+    li { margin-bottom: 6px; }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0;
+      font-size: 0.9rem;
+    }
+    th, td {
+      border: 1px solid #e5e7eb;
+      padding: 10px 14px;
+      text-align: left;
+    }
+    th {
+      background: #f5f3ff;
+      color: #5b21b6;
+      font-weight: 600;
+    }
+    tr:nth-child(even) { background: #fafafa; }
+    
+    .highlight-box {
+      background: #f5f3ff;
+      border-left: 4px solid #7c3aed;
+      padding: 16px 20px;
+      margin: 16px 0;
+      border-radius: 0 8px 8px 0;
+    }
+    code {
+      background: #f3f4f6;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 0.9em;
+    }
+    pre {
+      background: #1f2937;
+      color: #e5e7eb;
+      padding: 16px;
+      border-radius: 8px;
+      overflow-x: auto;
+      font-size: 0.85rem;
+      margin: 16px 0;
+    }
+    
+    .badge {
+      display: inline-block;
+      background: #7c3aed;
+      color: white;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      margin-right: 6px;
+      margin-bottom: 6px;
+    }
+    
+    .print-btn {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #7c3aed;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(124, 58, 237, 0.4);
+    }
+    .print-btn:hover { background: #6d28d9; }
+    
+    .toc {
+      background: #faf5ff;
+      padding: 20px 24px;
+      border-radius: 8px;
+      margin: 24px 0;
+    }
+    .toc ul { list-style: none; margin-left: 0; }
+    .toc li { margin-bottom: 8px; }
+    .toc a { color: #7c3aed; text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <button class="print-btn no-print" onclick="window.print()">Save as PDF</button>
+
+  <div class="cover">
+    <h1>SSS BAGS</h1>
+    <p class="subtitle">Full Stack E-Commerce Platform</p>
+    <p class="subtitle">Project Report for College Showcase</p>
+    <p class="meta">Production-ready • Rails 7.2 API • React 18 • Purple Theme</p>
+  </div>
+
+  <h2>1. Project Overview</h2>
+  <p><strong>SSS BAGS</strong> is a production-ready, full-stack e-commerce platform for selling bags, handbags, backpacks, wallets, and luggage. It features a modern purple-themed UI, complete authentication with email and phone verification, role-based access control (Admin & Customer), shopping cart, order management, and an admin dashboard.</p>
+  
+  <div class="highlight-box">
+    <strong>Key Highlights:</strong> Full-stack architecture (Rails API + React SPA) • Production deployment on Render + Vercel • JWT authentication with OTP verification • Complete e-commerce flow (Browse → Cart → Checkout → Order tracking) • Admin dashboard for products, orders, users, banners
+  </div>
+
+  <h2>2. Technology Stack</h2>
+  <h3>Backend</h3>
+  <table>
+    <tr><th>Technology</th><th>Purpose</th></tr>
+    <tr><td>Ruby 3.3+</td><td>Programming language</td></tr>
+    <tr><td>Rails 7.2</td><td>API framework</td></tr>
+    <tr><td>PostgreSQL</td><td>Primary database</td></tr>
+    <tr><td>Redis</td><td>Caching, Sidekiq background jobs</td></tr>
+    <tr><td>JWT</td><td>Access + refresh token authentication</td></tr>
+    <tr><td>bcrypt</td><td>Password hashing</td></tr>
+    <tr><td>Pundit</td><td>Role-based authorization</td></tr>
+    <tr><td>ActiveStorage</td><td>Image uploads</td></tr>
+    <tr><td>Sidekiq</td><td>Background job processing</td></tr>
+    <tr><td>Twilio</td><td>SMS OTP for phone verification</td></tr>
+    <tr><td>ActionMailer</td><td>Email verification</td></tr>
+    <tr><td>RSwag</td><td>API documentation (Swagger)</td></tr>
+  </table>
+  
+  <h3>Frontend</h3>
+  <table>
+    <tr><th>Technology</th><th>Purpose</th></tr>
+    <tr><td>React 18</td><td>UI framework</td></tr>
+    <tr><td>Vite 5</td><td>Build tool, dev server</td></tr>
+    <tr><td>React Router 6</td><td>Client-side routing</td></tr>
+    <tr><td>Redux Toolkit</td><td>State management</td></tr>
+    <tr><td>Axios</td><td>HTTP client</td></tr>
+    <tr><td>Tailwind CSS</td><td>Styling (purple theme)</td></tr>
+    <tr><td>Framer Motion</td><td>Animations</td></tr>
+  </table>
+
+  <h2>3. System Architecture</h2>
+  <pre>
+┌─────────────────┐     ┌─────────────────┐     ┌─────────────────┐
+│   React SPA     │────▶│  Rails API      │────▶│  PostgreSQL     │
+│   (Vercel)      │     │  (Render)       │     │  (Render)       │
+└─────────────────┘     └────────┬────────┘     └─────────────────┘
+                                │
+                                ├────▶ Redis (Sidekiq)
+                                ├────▶ Twilio (SMS OTP)
+                                └────▶ ActionMailer (Email)
+  </pre>
+  <p>All API routes are versioned under <code>/api/v1/</code>.</p>
+
+  <h2>4. Database Schema & Models</h2>
+  <table>
+    <tr><th>Table</th><th>Description</th></tr>
+    <tr><td>users</td><td>Customers and admins (name, email, phone, role, email_verified, phone_verified)</td></tr>
+    <tr><td>categories</td><td>Product categories (Handbags, Backpacks, Wallets, Luggage)</td></tr>
+    <tr><td>products</td><td>Items (name, price, discount_price, stock, slug, status, featured)</td></tr>
+    <tr><td>carts / cart_items</td><td>Shopping cart</td></tr>
+    <tr><td>orders / order_items</td><td>Placed orders with line items</td></tr>
+    <tr><td>addresses</td><td>User shipping addresses</td></tr>
+    <tr><td>payments</td><td>Payment records linked to orders</td></tr>
+    <tr><td>banners</td><td>Homepage promo banners</td></tr>
+    <tr><td>announcements</td><td>Top strip announcements</td></tr>
+    <tr><td>otp_rate_limits</td><td>Rate limiting for OTP sends</td></tr>
+  </table>
+
+  <h2>5. Authentication & Authorization</h2>
+  <h3>Authentication Flow</h3>
+  <ol>
+    <li><strong>Signup</strong> → Account created → Email verification sent (background job)</li>
+    <li><strong>Email verification</strong> → User clicks link → email_verified</li>
+    <li><strong>Phone verification</strong> → OTP via Twilio SMS → User enters code → phone_verified</li>
+    <li><strong>Login</strong> → JWT access + refresh tokens</li>
+    <li><strong>Token refresh</strong> → Frontend uses refresh token when access expires</li>
+  </ol>
+  <h3>Roles</h3>
+  <p><span class="badge">customer</span> Profile, Cart, Addresses, Orders, Product browse</p>
+  <p><span class="badge">admin</span> Dashboard, Products CRUD, Orders, Users, Banners, Announcements</p>
+  <h3>Security</h3>
+  <p>bcrypt passwords • JWT access (short-lived) + refresh tokens • OTP rate limiting • Pundit authorization • CORS • Strong params</p>
+
+  <h2>6. API Endpoints</h2>
+  <h3>Public</h3>
+  <p>POST /auth/signup, /auth/login, /auth/refresh, /auth/verify_email • GET /products, /products/:slug, /products/search • GET /categories, /banners, /announcements</p>
+  <h3>Customer (Auth)</h3>
+  <p>GET/PATCH /customer/profile • CRUD /customer/cart, /customer/addresses • GET/POST /customer/orders • GET /customer/orders/:id/track • POST /auth/send_otp, /auth/verify_otp</p>
+  <h3>Admin (Auth)</h3>
+  <p>GET /admin/dashboard • CRUD /admin/products, /admin/orders, /admin/users, /admin/categories, /admin/banners, /admin/announcements • GET /admin/payments • POST /admin/uploads</p>
+  <p><strong>Swagger docs:</strong> <code>/api-docs</code></p>
+
+  <h2>7. Frontend Pages</h2>
+  <table>
+    <tr><th>Route</th><th>Page</th></tr>
+    <tr><td>/</td><td>Landing (Hero, featured products, categories)</td></tr>
+    <tr><td>/products</td><td>Product listing with filters</td></tr>
+    <tr><td>/products/:slug</td><td>Product detail, add to cart</td></tr>
+    <tr><td>/login, /signup</td><td>Auth</td></tr>
+    <tr><td>/verify-email, /verify-otp</td><td>Verification</td></tr>
+    <tr><td>/profile, /cart, /orders</td><td>Customer area</td></tr>
+    <tr><td>/admin, /admin/products, /admin/orders</td><td>Admin dashboard</td></tr>
+  </table>
+
+  <h2>8. Order Flow</h2>
+  <ol>
+    <li>Validate cart, check stock</li>
+    <li>Calculate total (effective_price: discount or regular)</li>
+    <li>Create Order with shipping_address</li>
+    <li>Create OrderItems, decrement stock</li>
+    <li>Clear cart, create Payment record</li>
+  </ol>
+  <p><strong>Order statuses:</strong> pending → confirmed → shipped → delivered | cancelled</p>
+
+  <h2>9. Services & Background Jobs</h2>
+  <p><strong>JwtService</strong> – encode/decode access & refresh tokens</p>
+  <p><strong>OtpService</strong> – Send OTP via Twilio, verify (6-digit, 10 min expiry)</p>
+  <p><strong>EmailVerificationService</strong> – Validate email token</p>
+  <p><strong>OrderCreationService</strong> – Create order from cart</p>
+  <p><strong>EmailVerificationJob</strong> – Sidekiq job for verification emails</p>
+
+  <h2>10. Deployment</h2>
+  <p><strong>Live URLs:</strong></p>
+  <ul>
+    <li>Frontend: https://sss-bags-nine.vercel.app/products</li>
+    <li>Backend: https://sss-bags.onrender.com</li>
+    <li>API Docs: https://sss-bags.onrender.com/api-docs</li>
+  </ul>
+  <p><strong>Default admin:</strong> admin@sssbags.com / admin123</p>
+  <p><strong>Hosting:</strong> Render (backend + PostgreSQL) • Vercel (frontend) • GitHub (source)</p>
+
+  <h2>11. Local Development</h2>
+  <pre>docker-compose up -d db redis
+cd backend && bundle install && bin/rails db:create db:migrate db:seed
+bundle exec puma -C config/puma.rb
+cd frontend && npm install && npm run dev</pre>
+  <p>Backend: http://localhost:3000 • Frontend: http://localhost:5173</p>
+
+  <h2>12. Summary for College Presentation</h2>
+  <p>SSS BAGS demonstrates:</p>
+  <ul>
+    <li>Full-stack development (Rails API + React SPA)</li>
+    <li>Authentication & security (JWT, OTP, email verification, role-based access)</li>
+    <li>Complete e-commerce flow (products, cart, checkout, orders, tracking)</li>
+    <li>Admin capabilities (dashboard, CRUD for products, orders, users, content)</li>
+    <li>Production deployment (Render + Vercel, live URLs)</li>
+    <li>Modern tooling (Docker, Vite, Tailwind, Redux)</li>
+    <li>RESTful API design (versioned, documented via Swagger)</li>
+  </ul>
+
+  <p style="margin-top: 40px; text-align: center; color: #9ca3af; font-size: 0.9rem;">
+    SSS BAGS – Full Stack E-Commerce Project Report • Generated for College Showcase
+  </p>
+</body>
+</html>

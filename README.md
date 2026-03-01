@@ -104,6 +104,10 @@ All API routes are under `/api/v1/`.
 
 - `backend/` – Rails API, services, jobs, mailers, policies
 - `frontend/` – React app, Redux, API layer, pages (public, customer, admin)
+- `docs/` – Project documentation for college showcase
+  - `SSS_BAGS_Project_Report.pdf` – Full project report (PDF)
+  - `SSS_BAGS_Project_Report.html` – Same report (open in browser, Print → Save as PDF)
+- `PROJECT_DOCUMENTATION.md` – Comprehensive technical documentation
 
 ## License
 
