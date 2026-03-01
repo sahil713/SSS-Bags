@@ -10,7 +10,15 @@ class User < ApplicationRecord
   has_one_attached :avatar
 
   has_one :cart, dependent: :destroy
+  has_one :groww_connection, dependent: :destroy
+  has_many :holdings, dependent: :destroy
+  has_many :portfolio_statements, dependent: :destroy
+  has_many :investment_strategies, dependent: :destroy
   has_many :addresses, dependent: :destroy
+  has_many :portfolio_snapshots, dependent: :destroy
+  has_many :investment_pnl_records, dependent: :destroy
+  has_many :investment_tax_records, dependent: :destroy
+  has_many :investment_transactions, dependent: :destroy
   has_many :orders, dependent: :restrict_with_error
 
   validates :name, presence: true

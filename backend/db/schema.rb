@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_02_23_130100) do
+ActiveRecord::Schema[7.2].define(version: 2026_02_26_132813) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -117,11 +117,102 @@ ActiveRecord::Schema[7.2].define(version: 2025_02_23_130100) do
     t.index ["slug"], name: "index_categories_on_slug", unique: true
   end
 
+  create_table "groww_connections", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.text "api_key"
+    t.text "secret"
+    t.string "totp_secret"
+    t.datetime "linked_at"
+    t.datetime "last_synced_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_groww_connections_on_user_id", unique: true
+  end
+
+  create_table "holdings", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "symbol", null: false
+    t.string "isin"
+    t.string "name"
+    t.decimal "quantity", precision: 14, scale: 4, null: false
+    t.decimal "avg_price", precision: 14, scale: 4, null: false
+    t.decimal "current_price", precision: 14, scale: 4
+    t.string "holding_type", default: "equity", null: false
+    t.string "source", default: "manual", null: false
+    t.text "notes"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id", "symbol"], name: "index_holdings_on_user_id_and_symbol"
+    t.index ["user_id"], name: "index_holdings_on_user_id"
+  end
+
   create_table "home_banners", force: :cascade do |t|
     t.integer "position", default: 0, null: false
     t.string "link_url"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "investment_pnl_records", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "period_type", default: "monthly", null: false
+    t.date "period_start", null: false
+    t.date "period_end", null: false
+    t.decimal "realised_pnl", precision: 14, scale: 2, default: "0.0"
+    t.decimal "unrealised_pnl", precision: 14, scale: 2, default: "0.0"
+    t.decimal "dividend_income", precision: 14, scale: 2, default: "0.0"
+    t.decimal "intraday_pnl", precision: 14, scale: 2, default: "0.0"
+    t.decimal "fno_pnl", precision: 14, scale: 2, default: "0.0"
+    t.decimal "total_charges", precision: 14, scale: 2, default: "0.0"
+    t.text "notes"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id", "period_type", "period_start"], name: "idx_pnl_user_period"
+    t.index ["user_id"], name: "index_investment_pnl_records_on_user_id"
+  end
+
+  create_table "investment_strategies", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "name", null: false
+    t.text "description"
+    t.jsonb "rules", default: {}
+    t.string "strategy_type", default: "rule_based"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id", "strategy_type"], name: "index_investment_strategies_on_user_id_and_strategy_type"
+    t.index ["user_id"], name: "index_investment_strategies_on_user_id"
+  end
+
+  create_table "investment_tax_records", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "financial_year", null: false
+    t.decimal "elss_deduction", precision: 14, scale: 2, default: "0.0"
+    t.decimal "stcg_amount", precision: 14, scale: 2, default: "0.0"
+    t.decimal "ltcg_amount", precision: 14, scale: 2, default: "0.0"
+    t.decimal "intraday_pnl", precision: 14, scale: 2, default: "0.0"
+    t.text "notes"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id", "financial_year"], name: "index_investment_tax_records_on_user_id_and_financial_year", unique: true
+    t.index ["user_id"], name: "index_investment_tax_records_on_user_id"
+  end
+
+  create_table "investment_transactions", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "transaction_type", null: false
+    t.string "asset_type", default: "stocks", null: false
+    t.string "symbol", null: false
+    t.string "name"
+    t.decimal "quantity", precision: 14, scale: 4, null: false
+    t.decimal "price", precision: 14, scale: 4, null: false
+    t.decimal "amount", precision: 14, scale: 2, null: false
+    t.date "transaction_date", null: false
+    t.text "notes"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id", "symbol"], name: "index_investment_transactions_on_user_id_and_symbol"
+    t.index ["user_id", "transaction_date"], name: "index_investment_transactions_on_user_id_and_transaction_date"
+    t.index ["user_id"], name: "index_investment_transactions_on_user_id"
   end
 
   create_table "order_items", force: :cascade do |t|
@@ -168,6 +259,37 @@ ActiveRecord::Schema[7.2].define(version: 2025_02_23_130100) do
     t.index ["order_id"], name: "index_payments_on_order_id"
     t.index ["status"], name: "index_payments_on_status"
     t.index ["transaction_id"], name: "index_payments_on_transaction_id"
+  end
+
+  create_table "portfolio_snapshots", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.jsonb "holdings", default: []
+    t.decimal "total_value", precision: 14, scale: 2
+    t.decimal "total_pnl", precision: 14, scale: 2
+    t.decimal "total_pnl_percent", precision: 8, scale: 2
+    t.datetime "synced_at", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.date "snapshot_date"
+    t.index ["user_id", "snapshot_date"], name: "index_portfolio_snapshots_on_user_id_and_snapshot_date"
+    t.index ["user_id", "synced_at"], name: "index_portfolio_snapshots_on_user_id_and_synced_at"
+    t.index ["user_id"], name: "index_portfolio_snapshots_on_user_id"
+  end
+
+  create_table "portfolio_statements", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "broker"
+    t.date "statement_date"
+    t.jsonb "parsed_holdings", default: []
+    t.string "parse_status", default: "pending"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "document_type"
+    t.string "document_sub_type"
+    t.jsonb "parsed_data", default: {}
+    t.index ["user_id", "document_type", "document_sub_type"], name: "idx_on_user_id_document_type_document_sub_type_68b7e9eefb"
+    t.index ["user_id", "statement_date"], name: "index_portfolio_statements_on_user_id_and_statement_date"
+    t.index ["user_id"], name: "index_portfolio_statements_on_user_id"
   end
 
   create_table "products", force: :cascade do |t|
@@ -221,9 +343,17 @@ ActiveRecord::Schema[7.2].define(version: 2025_02_23_130100) do
   add_foreign_key "cart_items", "carts"
   add_foreign_key "cart_items", "products"
   add_foreign_key "carts", "users"
+  add_foreign_key "groww_connections", "users"
+  add_foreign_key "holdings", "users"
+  add_foreign_key "investment_pnl_records", "users"
+  add_foreign_key "investment_strategies", "users"
+  add_foreign_key "investment_tax_records", "users"
+  add_foreign_key "investment_transactions", "users"
   add_foreign_key "order_items", "orders"
   add_foreign_key "order_items", "products"
   add_foreign_key "orders", "users"
   add_foreign_key "payments", "orders"
+  add_foreign_key "portfolio_snapshots", "users"
+  add_foreign_key "portfolio_statements", "users"
   add_foreign_key "products", "categories"
 end

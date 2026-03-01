@@ -31,6 +31,30 @@ Rails.application.routes.draw do
           get :track, on: :member
           post :cancel, on: :member
         end
+
+        scope :investments do
+          get "document_types", to: "investments#document_types"
+          get "parsed_summary", to: "investments#parsed_summary"
+          post "build_portfolio_from_documents", to: "investments#build_portfolio_from_documents"
+          get "investing_opportunities", to: "investments#investing_opportunities"
+          get "dashboard", to: "investments#dashboard"
+          get "portfolio", to: "investments#portfolio"
+          post "sync", to: "investments#sync"
+          get "reports", to: "investments#reports"
+          get "reports/export", to: "investments#export_report"
+          get "sell_timing", to: "investments#sell_timing"
+          get "tips", to: "investments#tips"
+          resources :holdings, only: %i[index show create update destroy]
+          resources :investment_pnl_records, only: %i[index show create update destroy], path: "pnl_records"
+          resources :investment_tax_records, only: %i[index show create update destroy], path: "tax_records"
+          resources :investment_transactions, only: %i[index show create update destroy], path: "transactions"
+          resources :portfolio_snapshots, only: %i[index show create update destroy], path: "snapshots"
+          resources :portfolio_statements, only: %i[index show create update] do
+            post :retry_parse, on: :member
+          end
+          resources :investment_strategies, only: %i[index show create update destroy]
+          resource :groww_connection, only: %i[show destroy], controller: "groww_connections"
+        end
       end
 
       namespace :admin do

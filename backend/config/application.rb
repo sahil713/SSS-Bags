@@ -12,12 +12,13 @@ require "action_view/railtie"
 require "active_storage/engine"
 
 Bundler.require(*Rails.groups)
+require "roo" # XLSX parsing for Groww documents
 
 module SssBags
   class Application < Rails::Application
     config.load_defaults 7.2
     config.api_only = true
     config.autoload_paths += %W[#{config.root}/app/services #{config.root}/app/policies]
-    config.active_job.queue_adapter = :sidekiq
+    config.active_job.queue_adapter = (Rails.env.development? ? :inline : :sidekiq)
   end
 end

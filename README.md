@@ -100,10 +100,22 @@ All API routes are under `/api/v1/`.
 - CORS via `CORS_ORIGINS`
 - Strong params and indexes on DB
 
+## Investments module
+
+Email-verified customers can access `/investments` to:
+- Link Groww account (API key/secret)
+- View portfolio, P&L, holdings
+- Monthly/yearly reports with CSV export
+- Sell timing (1d, 15d, 1mo, etc.)
+- Tips & recommendations (rule-based + AI)
+- TradingView charts
+
+Run `bin/rails db:migrate` to create `groww_connections` and `portfolio_snapshots` tables.
+
 ## Project structure
 
 - `backend/` – Rails API, services, jobs, mailers, policies
-- `frontend/` – React app, Redux, API layer, pages (public, customer, admin)
+- `frontend/` – React app, Redux, API layer, pages (public, customer, admin, investments)
 
 ## License
 

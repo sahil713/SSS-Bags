@@ -10,7 +10,7 @@ import { getAnnouncements } from '../api/banners'
 import { setCart } from '../store/slices/cartSlice'
 
 const ALLOWED_WITHOUT_EMAIL_VERIFIED = ['/login', '/signup', '/verify-email']
-const ALLOWED_WITHOUT_PHONE_VERIFIED = ['/login', '/signup', '/verify-email', '/verify-otp']
+const ALLOWED_WITHOUT_PHONE_VERIFIED = ['/login', '/signup', '/verify-email', '/verify-otp', '/investments', '/investments/portfolio', '/investments/link-groww', '/investments/reports', '/investments/tips', '/investments/sell-timing']
 
 export default function Layout() {
   const dispatch = useDispatch()

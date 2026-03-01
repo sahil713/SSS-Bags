@@ -52,6 +52,14 @@ export default function Navbar() {
               >
                 Products
               </Link>
+              {isAuthenticated && user?.email_verified && !isAdmin && (
+                <Link
+                  to="/investments"
+                  className={'font-medium px-3 py-2 rounded-lg transition-colors ' + linkUnderline + ' ' + linkHover}
+                >
+                  Investments
+                </Link>
+              )}
               <button
                 type="button"
                 onClick={toggleTheme}

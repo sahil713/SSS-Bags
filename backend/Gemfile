@@ -35,6 +35,11 @@ gem "rack-cors"
 # Image processing for ActiveStorage
 gem "image_processing", "~> 1.12"
 
+# PDF parsing for portfolio statements
+gem "pdf-reader", "~> 2.12"
+# XLSX parsing for Groww Excel exports
+gem "roo", "~> 3.0"
+
 group :development, :test do
   gem "debug", platforms: %i[ mri mingw x64_mingw ]
   gem "rspec-rails", "~> 6.0"
