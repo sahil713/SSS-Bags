@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
 import { SHOP, whatsappUrl, telUrl } from '../constants/shop'
 import DotGrid from '../components/ui/DotGrid'
+import OpenStatus from '../components/ui/OpenStatus'
 
 export default function VisitUs() {
   return (
@@ -92,6 +93,14 @@ export default function VisitUs() {
                     </div>
                   ))}
                 </div>
+              </div>
+
+              <div>
+                <h3 className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-2">
+                  Opening hours
+                </h3>
+                <p className="text-gray-900 dark:text-white font-medium">{SHOP.hours.label}</p>
+                <OpenStatus className="mt-1 text-sm text-gray-500 dark:text-gray-400" />
               </div>
 
               <div>

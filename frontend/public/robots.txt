@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://sss-bags.sahiljindal2323.workers.dev/sitemap.xml

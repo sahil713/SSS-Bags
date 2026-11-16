@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { SHOP, telUrl } from '../../constants/shop'
+import OpenStatus from '../ui/OpenStatus'
 
 const posterImage = SHOP.photos[0].src
 
@@ -89,13 +90,8 @@ export default function HeroSection() {
           transition={{ duration: 0.6, delay: 0.35 }}
           className="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-gray-400"
         >
-          <span className="flex items-center gap-2">
-            <span className="relative flex w-2 h-2">
-              <span className="absolute inline-flex w-full h-full rounded-full bg-emerald-400 opacity-75 animate-ping" />
-              <span className="relative inline-flex w-2 h-2 rounded-full bg-emerald-400" />
-            </span>
-            Walk in, no appointment needed
-          </span>
+          <OpenStatus className="text-gray-200" />
+          <span>{SHOP.hours.label}</span>
           <a href={telUrl(SHOP.phones[0].value)} className="hover:text-white transition-colors">📞 {SHOP.phones[0].label}</a>
           <a href={SHOP.instagram.url} target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">
             {SHOP.instagram.handle}

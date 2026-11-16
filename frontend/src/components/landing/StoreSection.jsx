@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { SHOP, whatsappUrl, telUrl } from '../../constants/shop'
+import OpenStatus from '../ui/OpenStatus'
 
 export default function StoreSection() {
   return (
@@ -26,6 +27,8 @@ export default function StoreSection() {
           <div className="space-y-3 mb-8">
             <p className="text-gray-900 dark:text-white font-semibold">{SHOP.address.line1}</p>
             <p className="text-gray-500 dark:text-gray-400">{SHOP.address.line2}</p>
+            <p className="text-gray-700 dark:text-gray-300 pt-2">{SHOP.hours.label}</p>
+            <OpenStatus className="text-sm font-medium text-gray-600 dark:text-gray-300" />
           </div>
           <div className="flex flex-wrap justify-center gap-4">
             <Link

@@ -19,7 +19,7 @@ const steps = [
   {
     n: '03',
     title: 'Pick it up in Dhuri',
-    body: `Drop by our store ${SHOP.address.line1.replace('Near', 'near')}, Dhuri — we can keep it aside for you.`,
+    body: `Drop by our store ${SHOP.address.line1.replace('Near', 'near')}, Dhuri — we can keep it aside for you. ${SHOP.hours.label}.`,
     cta: { label: 'Get directions', to: '/visit-us' },
   },
 ]

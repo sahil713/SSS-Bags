@@ -25,6 +25,7 @@ export default function Footer() {
             <address className="not-italic mt-6 text-sm text-gray-400 space-y-1">
               <p>{SHOP.address.line1}</p>
               <p>{SHOP.address.line2}</p>
+              <p className="pt-2 text-gray-300">{SHOP.hours.label}</p>
             </address>
             <div className="mt-4 flex flex-wrap gap-3">
               {SHOP.phones.map((p) => (

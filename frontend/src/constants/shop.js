@@ -19,6 +19,8 @@ export const SHOP = {
     { name: 'Purses & Clutches', description: 'Everyday and party styles' },
     { name: 'Attachi & Trolley Bags', description: 'Full travel range' },
   ],
+  hours: { open: '09:30', close: '20:30', label: 'Open daily · 9:30 am – 8:30 pm' },
+  siteUrl: 'https://sss-bags.sahiljindal2323.workers.dev',
   photos: [
     { src: '/images/shop/store-handbags.jpg', alt: 'Wall of handbags on display at SSS Bags, Dhuri' },
     { src: '/images/shop/store-interior.jpg', alt: 'Inside SSS Bags store, Dhuri' },

@@ -12,6 +12,10 @@ const faqs = [
     a: `${SHOP.address.full}. Tap "Visit Us" for a map and one-tap directions.`,
   },
   {
+    q: 'What are your timings?',
+    a: `${SHOP.hours.label}. Walk in anytime — no appointment needed.`,
+  },
+  {
     q: 'Are the bags on the website exactly what’s in stock?',
     a: 'The photos show the kind of styles we carry. Stock changes often and the shop has many more designs than we can show here, so WhatsApp us a photo of what you want and we’ll confirm.',
   },
