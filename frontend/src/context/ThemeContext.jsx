@@ -1,13 +1,13 @@
 import { createContext, useContext, useEffect, useState } from 'react'
 
-const ThemeContext = createContext({ theme: 'light', setTheme: () => {} })
+const ThemeContext = createContext({ theme: 'dark', setTheme: () => {} })
 
 const STORAGE_KEY = 'sss-bags-theme'
 
 export function ThemeProvider({ children }) {
   const [theme, setThemeState] = useState(() => {
-    if (typeof window === 'undefined') return 'light'
-    return localStorage.getItem(STORAGE_KEY) || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+    if (typeof window === 'undefined') return 'dark'
+    return localStorage.getItem(STORAGE_KEY) || 'dark'
   })
 
   useEffect(() => {

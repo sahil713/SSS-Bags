@@ -9,7 +9,7 @@ const items = [
 
 export default function WhyChooseUs() {
   return (
-    <section className="w-full py-20 lg:py-28 bg-gray-50 dark:bg-gray-800/40">
+    <section className="w-full py-20 lg:py-28 bg-gray-50 dark:bg-black">
       <div className="max-w-content mx-auto px-6 lg:px-12">
         <motion.h2
           initial={{ opacity: 0, y: 16 }}

@@ -2,13 +2,14 @@ import { useEffect, useState } from 'react'
 import { getProducts } from '../api/products'
 import { getCategories } from '../api/categories'
 import HeroSection from '../components/landing/HeroSection'
+import OurStory from '../components/landing/OurStory'
 import FeaturedCategories from '../components/landing/FeaturedCategories'
 import FeaturedProducts from '../components/landing/FeaturedProducts'
 import PromoBanner from '../components/landing/PromoBanner'
 import DiscountSection from '../components/landing/DiscountSection'
+import StoreSection from '../components/landing/StoreSection'
 import WhyChooseUs from '../components/landing/WhyChooseUs'
 import TestimonialSlider from '../components/landing/TestimonialSlider'
-import NewsletterSection from '../components/landing/NewsletterSection'
 
 export default function Landing() {
   const [products, setProducts] = useState([])
@@ -29,15 +30,16 @@ export default function Landing() {
   }, [])
 
   return (
-    <div className="w-full min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="w-full min-h-screen bg-gray-50 dark:bg-black">
       <HeroSection />
+      <OurStory />
       <FeaturedCategories categories={categories} />
       <PromoBanner />
       <FeaturedProducts products={products} loading={loading} />
       <DiscountSection />
+      <StoreSection />
       <WhyChooseUs />
       <TestimonialSlider />
-      <NewsletterSection />
     </div>
   )
 }

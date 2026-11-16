@@ -12,16 +12,16 @@ export default function PromoBanner() {
       transition={{ duration: 0.6 }}
       className="relative w-full min-h-[420px] lg:min-h-[480px] flex items-center justify-center overflow-hidden rounded-none"
     >
-      <div className="absolute inset-0">
-        <img src={bgImage} alt="" className="w-full h-full object-cover" aria-hidden />
-        <div className="absolute inset-0 bg-gradient-to-r from-primary-900/90 via-primary-800/75 to-primary-700/60 dark:from-black/85 dark:via-primary-950/80 dark:to-primary-900/70" />
+      <div className="absolute inset-0 bg-black">
+        <img src={bgImage} alt="" className="w-full h-full object-cover opacity-30" aria-hidden />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/80 to-black" />
       </div>
       <div className="relative z-10 max-w-content mx-auto px-6 lg:px-12 py-16 lg:py-24 text-center">
         <motion.p
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-primary-200 dark:text-primary-300 text-sm font-semibold uppercase tracking-widest mb-4"
+          className="text-primary-300 text-sm font-semibold uppercase tracking-widest mb-4"
         >
           Limited Time
         </motion.p>
@@ -39,7 +39,7 @@ export default function PromoBanner() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.2 }}
-          className="text-lg md:text-xl text-primary-100 dark:text-primary-200 mb-10 max-w-2xl mx-auto"
+          className="text-lg md:text-xl text-gray-400 mb-10 max-w-2xl mx-auto"
         >
           Premium bags & luggage. Use code FEST40 at checkout.
         </motion.p>
@@ -51,7 +51,7 @@ export default function PromoBanner() {
         >
           <Link
             to="/products"
-            className="inline-block bg-white text-primary-700 font-semibold px-8 py-4 rounded-2xl hover:bg-primary-50 transition-all shadow-xl hover:scale-105"
+            className="inline-block bg-white text-gray-900 font-semibold px-8 py-4 rounded-2xl hover:bg-primary-50 transition-all shadow-xl hover:scale-105"
           >
             Shop the Sale
           </Link>

@@ -42,12 +42,12 @@ services:
       DATABASE_URL: postgres://postgres:postgres@db:5432/sss_bags_development
       REDIS_URL: redis://redis:6379/0
       JWT_SECRET: change_me_in_production_use_rails_secret
-      CORS_ORIGINS: http://localhost:5173,http://localhost:3000
+      CORS_ORIGINS: http://localhost:5173,http://localhost:3001
     depends_on:
       - db
       - redis
     ports:
-      - "3000:3000"
+      - "3001:3000"
     volumes:
       - ./backend:/app
       - backend_storage:/app/storage

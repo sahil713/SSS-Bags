@@ -7,6 +7,7 @@ import Landing from './pages/Landing'
 import Home from './pages/Home'
 import Products from './pages/Products'
 import ProductDetail from './pages/ProductDetail'
+import VisitUs from './pages/VisitUs'
 import Login from './pages/Login'
 import Signup from './pages/Signup'
 import VerifyEmail from './pages/VerifyEmail'
@@ -50,6 +51,7 @@ export default function App() {
 <Route path="home" element={<Home />} />
         <Route path="products" element={<Products />} />
         <Route path="products/:slug" element={<ProductDetail />} />
+        <Route path="visit-us" element={<VisitUs />} />
         <Route path="login" element={isAuthenticated ? <Navigate to={loginRedirectTo(user)} replace /> : <Login />} />
         <Route path="signup" element={isAuthenticated ? <Navigate to={loginRedirectTo(user)} replace /> : <Signup />} />
         <Route path="verify-email" element={<VerifyEmail />} />

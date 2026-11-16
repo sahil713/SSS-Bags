@@ -7,120 +7,7 @@ import { setCredentials, setRefreshToken } from '../store/slices/authSlice'
 import Button from '../components/Button'
 import Input from '../components/Input'
 import PhoneInput from '../components/PhoneInput'
-
-const containerVariants = {
-  hidden: { opacity: 0, scale: 0.3, rotateY: -25 },
-  visible: {
-    opacity: 1,
-    scale: 1,
-    rotateY: 0,
-    transition: {
-      type: 'spring',
-      stiffness: 200,
-      damping: 18,
-      mass: 0.8,
-    },
-  },
-}
-
-function AnimatedText({ text, className }) {
-  return (
-    <p className={className}>
-      {text.split('').map((char, i) => (
-        <motion.span
-          key={i}
-          initial={{ opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.25, delay: 0.6 + i * 0.04 }}
-          className="inline-block"
-        >
-          {char === ' ' ? '\u00A0' : char}
-        </motion.span>
-      ))}
-    </p>
-  )
-}
-
-function SignupVisual() {
-  return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.4 }}
-      className="relative h-full min-h-[280px] lg:min-h-[60vh] flex items-center justify-center p-8"
-      style={{ perspective: '1000px' }}
-    >
-      <motion.div
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
-        className="relative w-full max-w-sm"
-        style={{ transformStyle: 'preserve-3d' }}
-      >
-        <motion.div
-          initial={{ opacity: 0, scale: 0.5 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ type: 'spring', stiffness: 180, damping: 14, delay: 0.1 }}
-        >
-          <svg viewBox="0 0 200 160" className="w-full h-auto drop-shadow-2xl" aria-hidden style={{ transform: 'translateZ(20px)' }}>
-            <defs>
-              <linearGradient id="bagGradSignup" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#8b5cf6" />
-                <stop offset="100%" stopColor="#6d28d9" />
-              </linearGradient>
-            </defs>
-            <motion.path
-              d="M40 50v70a4 4 0 004 4h112a4 4 0 004-4V50M40 50h120M40 50l4-16a4 4 0 014-4h88a4 4 0 014 4l4 16"
-              stroke="url(#bagGradSignup)"
-              strokeWidth="2.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              fill="none"
-              initial={{ pathLength: 0.001 }}
-              animate={{ pathLength: 1 }}
-              transition={{ duration: 0.5, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-            />
-            <motion.path
-              d="M80 34v-4a8 8 0 0116 0v4"
-              stroke="url(#bagGradSignup)"
-              strokeWidth="2"
-              strokeLinecap="round"
-              fill="none"
-              initial={{ pathLength: 0.001 }}
-              animate={{ pathLength: 1 }}
-              transition={{ duration: 0.4, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
-            />
-            <motion.rect
-              x="70"
-              y="50"
-              width="60"
-              height="60"
-              rx="4"
-              fill="url(#bagGradSignup)"
-              fillOpacity="0.15"
-              stroke="url(#bagGradSignup)"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.3, delay: 0.5 }}
-            />
-          </svg>
-        </motion.div>
-        <div className="mt-6 overflow-hidden">
-          <AnimatedText text="Join SSS BAGS" className="text-center text-primary-600 dark:text-primary-400 font-semibold text-lg tracking-wide" />
-        </div>
-        <motion.div
-          initial={{ scaleX: 0, opacity: 0 }}
-          animate={{ scaleX: 1, opacity: 1 }}
-          transition={{ duration: 0.5, delay: 1, ease: [0.22, 1, 0.36, 1] }}
-          className="mt-4 mx-auto w-20 h-0.5 bg-primary-500/40 rounded-full origin-center"
-        />
-      </motion.div>
-    </motion.div>
-  )
-}
+import AuthVisual from '../components/auth/AuthVisual'
 
 function parseFieldErrors(errors) {
   if (!Array.isArray(errors) && typeof errors === 'string') return { general: errors }
@@ -185,7 +72,7 @@ export default function Signup() {
   return (
     <div className="grid lg:grid-cols-2 min-h-[calc(100vh-12rem)] lg:min-h-[calc(100vh-14rem)]">
       <div className="order-2 lg:order-1">
-        <SignupVisual />
+        <AuthVisual title="Join SSS BAGS" gradientId="bagGradSignup" />
       </div>
       <motion.div
         initial={{ opacity: 0, x: 24 }}

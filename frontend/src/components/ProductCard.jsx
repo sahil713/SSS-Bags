@@ -6,6 +6,7 @@ import { useAuth } from '../hooks/useAuth'
 import { addToCart, getCart } from '../api/cart'
 import { setCart } from '../store/slices/cartSlice'
 import { useToast } from './common/Toast'
+import { formatPrice } from '../lib/format'
 
 export default function ProductCard({ product, showAddToCart = false }) {
   const images = product.images || []
@@ -16,6 +17,8 @@ export default function ProductCard({ product, showAddToCart = false }) {
   const discountPercent = hasDiscount && product.price > 0
     ? Math.round((1 - product.discount_price / product.price) * 100)
     : 0
+  const outOfStock = product.stock_quantity != null && product.stock_quantity < 1
+  const lowStock = !outOfStock && product.stock_quantity != null && product.stock_quantity <= 5
   const [hover, setHover] = useState(false)
   const [adding, setAdding] = useState(false)
   const [wishlisted, setWishlisted] = useState(false)
@@ -90,6 +93,13 @@ export default function ProductCard({ product, showAddToCart = false }) {
             -{discountPercent}%
           </span>
         )}
+        {outOfStock && (
+          <div className="absolute inset-0 bg-white/70 dark:bg-gray-900/70 flex items-center justify-center z-10">
+            <span className="px-3 py-1.5 rounded-lg bg-gray-900/90 dark:bg-black/80 text-white text-xs font-bold uppercase tracking-wide">
+              Out of stock
+            </span>
+          </div>
+        )}
         <button
           type="button"
           onClick={handleWishlist}
@@ -110,25 +120,37 @@ export default function ProductCard({ product, showAddToCart = false }) {
             <button
               type="button"
               onClick={handleAddToCart}
-              disabled={adding || (product.stock_quantity != null && product.stock_quantity < 1)}
+              disabled={adding || outOfStock}
               className="w-full py-3 rounded-xl bg-primary-600 hover:bg-primary-700 text-white text-sm font-semibold disabled:opacity-50 transition-colors shadow-lg"
             >
-              {adding ? 'Adding…' : 'Add to cart'}
+              {adding ? 'Adding…' : outOfStock ? 'Out of stock' : 'Add to cart'}
             </button>
           </motion.div>
         )}
       </div>
       <div className="p-5">
+        {product.category_name && (
+          <p className="text-[11px] font-bold uppercase tracking-wider text-gray-400 dark:text-gray-500 mb-1">
+            {product.category_name}
+          </p>
+        )}
         <h3 className="font-semibold text-gray-900 dark:text-white line-clamp-2 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors leading-snug">
           {product.name}
         </h3>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{product.category_name}</p>
         <div className="mt-3 flex items-center gap-2 flex-wrap">
-          <span className="text-lg font-bold text-primary-700 dark:text-primary-400">₹{price}</span>
+          <span className="text-lg font-bold text-primary-700 dark:text-primary-400">₹{formatPrice(price)}</span>
           {hasDiscount && (
-            <span className="text-sm text-gray-400 line-through">₹{product.price}</span>
+            <>
+              <span className="text-sm text-gray-400 line-through">₹{formatPrice(product.price)}</span>
+              <span className="text-xs font-semibold text-green-600 dark:text-green-500">{discountPercent}% off</span>
+            </>
           )}
         </div>
+        {lowStock && (
+          <p className="mt-1.5 text-xs font-medium text-amber-600 dark:text-amber-500">
+            Only {product.stock_quantity} left
+          </p>
+        )}
       </div>
     </Link>
   )

@@ -1,7 +1,7 @@
 # SSS BAGS Backend - Ruby 3.3 + Rails 7.2
 FROM ruby:3.3-alpine AS base
 
-RUN apk add --no-cache build-base git libpq-dev nodejs tzdata imagemagick
+RUN apk add --no-cache build-base git libpq-dev nodejs tzdata imagemagick yaml-dev
 
 WORKDIR /app
 

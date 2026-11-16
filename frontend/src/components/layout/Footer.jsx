@@ -1,29 +1,40 @@
 import { Link } from 'react-router-dom'
 import Logo from '../ui/Logo'
+import { SHOP, whatsappUrl, telUrl } from '../../constants/shop'
 
 const links = [
   { to: '/products', label: 'Products' },
+  { to: '/visit-us', label: 'Visit Our Store' },
   { to: '/cart', label: 'Cart' },
   { to: '/profile', label: 'Account' },
   { to: '/my-orders', label: 'My Orders' },
 ]
 
-const social = [
-  { name: 'Instagram', href: '#', icon: '📷' },
-  { name: 'Facebook', href: '#', icon: 'f' },
-  { name: 'Twitter', href: '#', icon: '𝕏' },
-]
-
 export default function Footer() {
   return (
-    <footer className="w-full bg-gray-900 dark:bg-gray-950 text-gray-300 mt-auto">
+    <footer className="w-full bg-gray-900 dark:bg-black text-gray-300 mt-auto">
       <div className="max-w-content mx-auto px-6 lg:px-12 py-16 lg:py-20">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-16">
           <div className="lg:col-span-2">
             <Logo className="text-white hover:text-white mb-6" />
             <p className="text-base text-gray-400 max-w-md leading-relaxed">
-              Premium bags, backpacks & luggage. Quality that travels with you.
+              {SHOP.tagline}. Quality that travels with you.
             </p>
+            <address className="not-italic mt-6 text-sm text-gray-400 space-y-1">
+              <p>{SHOP.address.line1}</p>
+              <p>{SHOP.address.line2}</p>
+            </address>
+            <div className="mt-4 flex flex-wrap gap-3">
+              {SHOP.phones.map((p) => (
+                <a
+                  key={p.value}
+                  href={telUrl(p.value)}
+                  className="text-sm font-medium text-primary-300 hover:text-white transition-colors"
+                >
+                  📞 {p.label}
+                </a>
+              ))}
+            </div>
           </div>
           <div>
             <h3 className="font-bold text-white text-lg mb-4">Quick links</h3>
@@ -38,20 +49,34 @@ export default function Footer() {
             </ul>
           </div>
           <div>
+            <h3 className="font-bold text-white text-lg mb-4">What we sell</h3>
+            <ul className="space-y-3 mb-6">
+              {SHOP.whatWeSell.map((item) => (
+                <li key={item.name} className="text-gray-400 text-sm">
+                  {item.name}
+                </li>
+              ))}
+            </ul>
             <h3 className="font-bold text-white text-lg mb-4">Follow us</h3>
             <div className="flex gap-4">
-              {social.map((s) => (
-                <a
-                  key={s.name}
-                  href={s.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-gray-400 hover:text-primary-400 transition-colors text-xl"
-                  aria-label={s.name}
-                >
-                  {s.icon}
-                </a>
-              ))}
+              <a
+                href={SHOP.instagram.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-400 hover:text-primary-400 transition-colors text-xl"
+                aria-label="Instagram"
+              >
+                📷
+              </a>
+              <a
+                href={whatsappUrl(SHOP.phones[0].value)}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-400 hover:text-primary-400 transition-colors text-xl"
+                aria-label="WhatsApp"
+              >
+                💬
+              </a>
             </div>
           </div>
         </div>

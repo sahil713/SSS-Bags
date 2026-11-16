@@ -55,7 +55,7 @@ export default function AnnouncementBar({ announcements = [] }) {
         animate={{ height: 'auto', opacity: 1 }}
         exit={{ height: 0, opacity: 0 }}
         transition={{ duration: 0.35, ease: 'easeOut' }}
-        className="sticky top-0 z-[100] overflow-hidden bg-gradient-to-r from-primary-600 via-primary-700 to-primary-800 dark:from-primary-700 dark:to-primary-900 text-white shadow-md"
+        className="relative z-[60] overflow-hidden bg-black text-white border-b border-primary-500/30 shadow-md"
       >
         <div className="max-w-content mx-auto px-6 lg:px-12 py-3">
           <div className="flex items-center justify-center gap-4 flex-wrap pr-10">

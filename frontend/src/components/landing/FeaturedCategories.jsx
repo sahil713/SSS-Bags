@@ -45,7 +45,7 @@ export default function FeaturedCategories({ categories = [] }) {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
                 <div className="absolute inset-0 flex flex-col justify-end p-6 text-white">
-                  <span className="font-bold text-xl lg:text-2xl group-hover:translate-y-0 translate-y-0 transition-transform duration-300">
+                  <span className="font-bold text-xl lg:text-2xl">
                     {cat.name}
                   </span>
                   <span className="text-sm text-white/90 mt-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
