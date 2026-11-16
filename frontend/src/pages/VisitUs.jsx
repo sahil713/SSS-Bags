@@ -1,17 +1,18 @@
 import { motion } from 'framer-motion'
 import { SHOP, whatsappUrl, telUrl } from '../constants/shop'
+import DotGrid from '../components/ui/DotGrid'
 
 export default function VisitUs() {
   return (
     <div className="w-full">
       <section className="relative w-full min-h-[45vh] flex items-center overflow-hidden bg-black text-white">
-        <img
-          src={SHOP.photos[1].src}
-          alt=""
-          className="absolute inset-0 w-full h-full object-cover opacity-30"
+        {/* No photo here: both store photos are shown in the gallery below. */}
+        <DotGrid />
+        <div
+          className="absolute inset-0"
+          style={{ background: 'radial-gradient(ellipse 55% 70% at 85% 10%, rgba(124,58,237,0.4), transparent 70%)' }}
           aria-hidden
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/70 to-black" />
         <div className="relative max-w-content mx-auto px-6 lg:px-12 py-20 w-full">
           <motion.p
             initial={{ opacity: 0, y: 16 }}

@@ -3,11 +3,13 @@ import Logo from '../ui/Logo'
 import { SHOP, whatsappUrl, telUrl } from '../../constants/shop'
 
 const links = [
-  { to: '/products', label: 'Products' },
+  { to: '/products', label: 'Browse Collection' },
   { to: '/visit-us', label: 'Visit Our Store' },
-  { to: '/cart', label: 'Cart' },
-  { to: '/profile', label: 'Account' },
-  { to: '/my-orders', label: 'My Orders' },
+  { to: '/#faq', label: 'FAQs' },
+  // BACKEND DISABLED — restore when accounts and orders are live (see App.jsx).
+  // { to: '/cart', label: 'Cart' },
+  // { to: '/profile', label: 'Account' },
+  // { to: '/my-orders', label: 'My Orders' },
 ]
 
 export default function Footer() {
@@ -18,7 +20,7 @@ export default function Footer() {
           <div className="lg:col-span-2">
             <Logo className="text-white hover:text-white mb-6" />
             <p className="text-base text-gray-400 max-w-md leading-relaxed">
-              {SHOP.tagline}. Quality that travels with you.
+              {SHOP.tagline}. Hundreds of designs in store at Dhuri — come browse, or ask us on WhatsApp.
             </p>
             <address className="not-italic mt-6 text-sm text-gray-400 space-y-1">
               <p>{SHOP.address.line1}</p>

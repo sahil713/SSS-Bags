@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { SHOP } from '../../constants/shop'
+import { SHOP, telUrl } from '../../constants/shop'
 
 const posterImage = SHOP.photos[0].src
 
@@ -37,19 +37,28 @@ export default function HeroSection() {
           transition={{ duration: 0.5 }}
           className="text-primary-300 text-sm font-semibold tracking-[0.25em] uppercase mb-6"
         >
-          Premium Bags & Luggage
+          {SHOP.name} · Dhuri, Punjab
         </motion.p>
 
         <motion.h1
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.08 }}
-          className="text-6xl sm:text-8xl lg:text-9xl font-extrabold tracking-tight leading-[0.92] mb-10"
+          className="text-6xl sm:text-8xl lg:text-9xl font-extrabold tracking-tight leading-[0.92] mb-8"
         >
           Bags for
           <br />
           every journey.
         </motion.h1>
+
+        <motion.p
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.14 }}
+          className="text-lg sm:text-xl text-gray-300 max-w-xl mb-10"
+        >
+          Ladies handbags, purses, clutches, backpacks and trolley bags — hundreds of designs in store, near Double Phatak.
+        </motion.p>
 
         <motion.div
           initial={{ opacity: 0, y: 16 }}
@@ -63,15 +72,34 @@ export default function HeroSection() {
               to="/products"
               className="relative inline-block bg-white text-gray-900 font-semibold px-9 py-4 rounded-2xl hover:bg-primary-50 transition-all duration-300 shadow-2xl hover:scale-105"
             >
-              Shop Now
+              Browse Collection
             </Link>
           </div>
           <Link
-            to="/products"
+            to="/visit-us"
             className="inline-block border-2 border-white/40 text-white font-semibold px-9 py-4 rounded-2xl hover:bg-white/10 transition-colors"
           >
-            Explore Collection
+            Visit the Store
           </Link>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.6, delay: 0.35 }}
+          className="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-gray-400"
+        >
+          <span className="flex items-center gap-2">
+            <span className="relative flex w-2 h-2">
+              <span className="absolute inline-flex w-full h-full rounded-full bg-emerald-400 opacity-75 animate-ping" />
+              <span className="relative inline-flex w-2 h-2 rounded-full bg-emerald-400" />
+            </span>
+            Walk in, no appointment needed
+          </span>
+          <a href={telUrl(SHOP.phones[0].value)} className="hover:text-white transition-colors">📞 {SHOP.phones[0].label}</a>
+          <a href={SHOP.instagram.url} target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">
+            {SHOP.instagram.handle}
+          </a>
         </motion.div>
       </div>
     </section>

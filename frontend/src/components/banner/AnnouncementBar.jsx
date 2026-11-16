@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 
-const STORAGE_KEY = 'sss-bags-announcement-closed'
-const DEFAULT_MESSAGE = '🔥 Diwali Mega Sale Live Now! Shop Before It Ends!'
+const STORAGE_KEY = 'sss-bags-announcement-closed-v2'
+const DEFAULT_MESSAGE = '👜 Fresh stock in store · Near Double Phatak, Dhuri · WhatsApp 70091 83833'
 
 export default function AnnouncementBar({ announcements = [] }) {
   const [closed, setClosed] = useState(() => {
@@ -26,12 +26,21 @@ export default function AnnouncementBar({ announcements = [] }) {
   const showBar = (items.length > 0 || showDefault) && !closed
 
   useEffect(() => {
-    if (closed) localStorage.setItem(STORAGE_KEY, 'true')
+    if (!closed) return
+    try {
+      localStorage.setItem(STORAGE_KEY, 'true')
+    } catch {
+      /* storage unavailable */
+    }
   }, [closed])
 
   useEffect(() => {
     if (closedIds.size > 0) {
-      localStorage.setItem(STORAGE_KEY + '-ids', JSON.stringify(Array.from(closedIds)))
+      try {
+        localStorage.setItem(STORAGE_KEY + '-ids', JSON.stringify(Array.from(closedIds)))
+      } catch {
+        /* storage unavailable */
+      }
     }
   }, [closedIds])
 
